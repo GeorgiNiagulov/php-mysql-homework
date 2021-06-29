@@ -23,15 +23,15 @@
                     if(validateStringLength(2, 64, $post['name'], 'name')) {
                         $name = htmlspecialchars($post['name']);
                     } else {
-                        $error['name'] = validateStringLength(2, 64, $post['name'], 'name');
+                        $error['name'] = "Полето трябва да бъде между 2 и 64 символа";
                     }
                 }
-        
+                
                 if (!empty($post['family'])) {
                     if(validateStringLength(2, 64, $post['family'], 'family')) {
-                        $name = htmlspecialchars($post['family']);
+                        $family = htmlspecialchars($post['family']);
                     } else {
-                        $error['family'] = validateStringLength(2, 64, $post['family'], 'family');
+                        $error['family'] = "Полето трябва да бъде между 2 и 64 символа";
                     }
                 }
         
@@ -45,9 +45,10 @@
         
                 if (!empty($post['birthDate'])) {
                     if(validateDate($post['birthDate'], 'birthDate')) {
-                        $birthDate = $post['birthDate'];
+                        $date = $post['birthDate'];
+                        $birthDate =  $date;
                     } else {
-                        $error['birthDate'] = validateDate($post['birthDate'], 'BirthDate');
+                        $error['birthDate'] = "Полето трябва да има валидна дата във формат гггг-мм-дд";
                     }
                 }
         
@@ -55,14 +56,13 @@
                     if(validateNumber($post['age'], 'Age')) {
                         $age = $post['age'];
                     } else {
-                        $error['age'] = validateNumber($post['age'], 'Age');
+                        $error['age'] = "Полето трябва да е цяло число";
                     }
                 } else {
-                    $birthDate = explode("/", $birthDate);
-
-                    $age = (date("md", date("U", mktime(0, 0, 0, $birthDate[0], $birthDate[1], $birthDate[2]))) > date("md")
-                        ? ((date("Y") - $birthDate[2]) - 1)
-                        : (date("Y") - $birthDate[2]));
+                    $date = new DateTime($birthDate);
+                    $now = new DateTime();
+                    $interval = $now->diff($date);
+                    $age = $interval->y;
                 }
         
                 if (!empty($post['email'])) {
@@ -81,23 +81,24 @@
                     $avatar = $post['avatar'];
                 }
         
-                $createdAt = new \DateTime();
+                $date = new \DateTime();
+                $createdAt = $date->format('Y-m-d H:i:s');
+                var_dump($error);die();
 
                 if (empty($error)) {
                     $sql = "INSERT INTO contact_data 
-                            (name, family, city, sex, 
-                            age, birthdate, email,
+                            (`name`, `family`, city, sex, 
+                            age, birthDate, email,
                             notes, avatar, createdAt) 
                             VALUES 
                             ('$name', '$family', '$city', '$sex',
                             '$age', '$birthDate', '$email',
                             '$notes', '$avatar', '$createdAt')";
-                    
                     if (mysqli_query($mysqli, $sql) === TRUE) {
                         mysqli_close($mysqli);
                         header('Location: index.php');
                     } else {
-                        echo "Error updating record: " . $mysqli->error;
+                        echo "Error adding record: " . $mysqli->error;
                     }
                 }
             }
@@ -133,7 +134,7 @@
         <label for="age">Години</label><br />
         <input type="text" name="age" value=""><br />
         <label for="birthDate">Рожденна дата</label><br />
-        <input type="date" name="birthDate" value=""><br />
+        <input type="text" name="birthDate" value="" placeholder="гггг-мм-дд"><br />
         <label for="sex">Пол</label><br/>
         <input type="radio" name="sex" value="male" id="sex">Мъжки 
         <input type="radio" name="sex" value="female" id="sex">Женски <br/>

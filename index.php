@@ -30,7 +30,7 @@
                     <td><?=$contact['city']?></td>
                     <td><?=$contact['sex']?></td>
                     <td><a href="edit.php?id=<?php echo urlencode($contact['id']); ?>"> Редактиране</a></td>
-                    <td><a href="delete.php?id=<?php echo urlencode($contact['id']); ?>" onclick="return confirm('Сигурни ли сте?');">Изтриване</a></td>
+                    <td><a href="delete.php?id=<?php echo urlencode($contact['id']); ?>" >Изтриване</a></td>
                 </tr>
             <?php } ?>
         </tbody>

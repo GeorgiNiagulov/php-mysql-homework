@@ -39,7 +39,7 @@ if (!empty($_POST)) {
 
         if (!empty($post['family'])) {
             if(validateStringLength(2, 64, $post['family'], 'family')) {
-                $name = htmlspecialchars($post['family']);
+                $family = htmlspecialchars($post['family']);
             } else {
                 $error['family'] = validateStringLength(2, 64, $post['family'], 'family');
             }
@@ -87,12 +87,13 @@ if (!empty($_POST)) {
             $avatar = $post['avatar'];
         }
 
-        $editedAt = new \DateTime();
+        $date = new \DateTime();
+        $editedAt = $date->format('Y-m-d H:i:s');
 
         if (empty($error)) {
             $sql = "UPDATE contact_data 
                     SET 
-                        name = '$name', 
+                        `name` = '$name', 
                         family = '$family', 
                         city = '$city', 
                         sex = '$sex',
@@ -101,7 +102,7 @@ if (!empty($_POST)) {
                         notes = '$notes',
                         avatar = '$avatar',
                         editedAt = '$editedAt',
-                        birthDate = '$birthDate',
+                        birthdate = '$birthDate'
                     WHERE id = '$id'";
             if (mysqli_query($mysqli, $sql) === TRUE) {
                 mysqli_close($mysqli);
@@ -153,7 +154,7 @@ if (!empty($_POST)) {
         <label for="age">Години</label><br />
         <input type="text" name="age" value="<?php echo htmlentities($contact['age']); ?>"><br />
         <label for="birthDate">Рожденна дата</label><br />
-        <input type="date" name="birthDate" value="<?php echo htmlentities($contact['birthDate']); ?>"><br />
+        <input type="text" name="birthDate" value="<?php echo htmlentities($contact['birthdate']); ?>"><br />
         <label for="sex">Пол</label><br />
         <input type="radio" name="sex" value="male" <?php echo ($contact['sex']=='male')?'checked':'' ?> size="17">Мъжки
         <input type="radio" name="sex" value="female" <?php echo ($contact['sex']=='female')?'checked':'' ?>
