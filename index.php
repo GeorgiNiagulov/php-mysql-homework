@@ -17,8 +17,16 @@
         <thead>
             <tr>
                 <td>Име</td>
+                <td>Фамилия</td>
                 <td>Град</td>
                 <td>Пол</td>
+                <td>Години</td>
+                <td>Рожденна дата</td>
+                <td>Имейл</td>
+                <td>Бележки</td>
+                <td>Аватар</td>
+                <td>Създаден на</td>
+                <td>Редактиран на</td>
                 <td>Действие</td>
             </tr>
         </thead>
@@ -27,8 +35,16 @@
             <?php foreach($contacts as $contact) {?>
                 <tr>
                     <td><?=$contact['name']?></td>
+                    <td><?=$contact['family']?></td>
                     <td><?=$contact['city']?></td>
                     <td><?=$contact['sex']?></td>
+                    <td><?=$contact['age']?></td>
+                    <td><?=$contact['birthdate']?></td>
+                    <td><?=$contact['email']?></td>
+                    <td><?=$contact['notes']?></td>
+                    <td><img src="/uploads/<?=$contact['avatar']?>" alt="" width="200" height="200"><?=$contact['avatar']?></td>
+                    <td><?=$contact['createdAt']?></td>
+                    <td><?=$contact['editedAt']?></td>
                     <td><a href="edit.php?id=<?php echo urlencode($contact['id']); ?>"> Редактиране</a></td>
                     <td><a href="delete.php?id=<?php echo urlencode($contact['id']); ?>" >Изтриване</a></td>
                 </tr>

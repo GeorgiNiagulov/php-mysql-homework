@@ -1,6 +1,5 @@
 <?php
 
-
 function find_contact_by_id($contact_id, $mysqli) {
 
     $safe_contact_id = mysqli_real_escape_string($mysqli, $contact_id);
@@ -13,5 +12,6 @@ function find_contact_by_id($contact_id, $mysqli) {
     } else {
         return null;
     }
+
 }
 

@@ -30,18 +30,20 @@ if (!empty($_POST)) {
         $error = [];
 
         if (!empty($post['name'])) {
-            if(validateStringLength(2, 64, $post['name'], 'name')) {
+            $validName = validateStringLength(2, 64, $post['name'], 'name');
+            if($validName === true) {
                 $name = htmlspecialchars($post['name']);
             } else {
-                $error['name'] = validateStringLength(2, 64, $post['name'], 'name');
+                $error['name'] = $validName;
             }
         }
-
+        
         if (!empty($post['family'])) {
-            if(validateStringLength(2, 64, $post['family'], 'family')) {
+            $validFamily = validateStringLength(2, 64, $post['family'], 'family');
+            if($validFamily === true) {
                 $family = htmlspecialchars($post['family']);
             } else {
-                $error['family'] = validateStringLength(2, 64, $post['family'], 'family');
+                $error['family'] = $validFamily;
             }
         }
 
@@ -54,28 +56,33 @@ if (!empty($_POST)) {
         }
 
         if (!empty($post['birthDate'])) {
-            if(validateDate($post['birthDate'], 'birthDate')) {
+            $validDate = validateDate($post['birthDate'], 'birthDate');
+            if($validDate === true) {
                 $birthDate = $post['birthDate'];
             } else {
-                $error['birthDate'] = validateDate($post['birthDate'], 'BirthDate');
+                $error['birthDate'] = $validDate;
             }
         }
 
         if (!empty($post['age'])) {
-            if(validateNumber($post['age'], 'Age')) {
+            $validAge = validateNumber($post['age'], 'Age');
+            if($validAge === true) {
                 $age = $post['age'];
             } else {
-                $error['age'] = validateNumber($post['age'], 'Age');
+                $error['age'] = $validAge;
             }
         } else {
-            $age = new \Datetime() - $birthDate;
+            $date = new DateTime($birthDate);
+            $now = new DateTime();
+            $interval = $now->diff($date);
+            $age = $interval->y;
         }
 
         if (!empty($post['email'])) {
-            if (filter_var($post['email'], FILTER_VALIDATE_EMAIL)) {
+            if(filter_var($post['email'], FILTER_VALIDATE_EMAIL)) {
                 $email = $post['email'];
             } else {
-                $error['email'] = 'Имейлът не е правилен.';
+                $error['email'] = 'Невалиден имейл.';
             }
         }
 
@@ -134,7 +141,7 @@ if (!empty($_POST)) {
             }
         }
     ?>
-    <form method="post">
+    <form method="post" action="upload.php" enctype="multipart/form-data">
         <label for="name">Име</label><br />
         <input type="text" name="name" value="<?php echo htmlentities($contact['name']); ?>"><br />
         <label for="family">Фамилия</label><br />

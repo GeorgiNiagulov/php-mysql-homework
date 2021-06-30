@@ -1,6 +1,7 @@
 <?php
         require_once 'db/connect.php';
         require_once 'logic/validate.php';
+
         $cities = ['Sofia', 'Varna', 'Plovdiv', 'Bourgas'];
         $post = $_POST;
         $name = null;
@@ -20,18 +21,20 @@
                 $error = [];
 
                 if (!empty($post['name'])) {
-                    if(validateStringLength(2, 64, $post['name'], 'name')) {
+                    $validName = validateStringLength(2, 64, $post['name'], 'name');
+                    if($validName === true) {
                         $name = htmlspecialchars($post['name']);
                     } else {
-                        $error['name'] = "Полето трябва да бъде между 2 и 64 символа";
+                        $error['name'] = $validName;
                     }
                 }
                 
                 if (!empty($post['family'])) {
-                    if(validateStringLength(2, 64, $post['family'], 'family')) {
+                    $validFamily = validateStringLength(2, 64, $post['family'], 'family');
+                    if($validFamily === true) {
                         $family = htmlspecialchars($post['family']);
                     } else {
-                        $error['family'] = "Полето трябва да бъде между 2 и 64 символа";
+                        $error['family'] = $validFamily;
                     }
                 }
         
@@ -44,19 +47,20 @@
                 }
         
                 if (!empty($post['birthDate'])) {
-                    if(validateDate($post['birthDate'], 'birthDate')) {
-                        $date = $post['birthDate'];
-                        $birthDate =  $date;
+                    $validDate = validateDate($post['birthDate'], 'birthDate');
+                    if($validDate === true) {
+                        $birthDate = $post['birthDate'];
                     } else {
-                        $error['birthDate'] = "Полето трябва да има валидна дата във формат гггг-мм-дд";
+                        $error['birthDate'] = $validDate;
                     }
                 }
         
                 if (!empty($post['age'])) {
-                    if(validateNumber($post['age'], 'Age')) {
+                    $validAge = validateNumber($post['age'], 'Age');
+                    if($validAge === true) {
                         $age = $post['age'];
                     } else {
-                        $error['age'] = "Полето трябва да е цяло число";
+                        $error['age'] = $validAge;
                     }
                 } else {
                     $date = new DateTime($birthDate);
@@ -66,10 +70,10 @@
                 }
         
                 if (!empty($post['email'])) {
-                    if (filter_var($post['email'], FILTER_VALIDATE_EMAIL)) {
+                    if(filter_var($post['email'], FILTER_VALIDATE_EMAIL)) {
                         $email = $post['email'];
                     } else {
-                        $error['email'] = 'Имейлът не е правилен.';
+                        $error['email'] = 'Невалиден имейл.';
                     }
                 }
         
@@ -77,13 +81,8 @@
                     $notes = $post['notes'];
                 }
         
-                if (!empty($post['avatar'])) {
-                    $avatar = $post['avatar'];
-                }
-        
                 $date = new \DateTime();
                 $createdAt = $date->format('Y-m-d H:i:s');
-                var_dump($error);die();
 
                 if (empty($error)) {
                     $sql = "INSERT INTO contact_data 
@@ -106,12 +105,14 @@
     ?>
 <!DOCTYPE html>
 <html lang="bg">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Добавяне</title>
 </head>
+
 <body>
     <?php 
         if(!empty($error)) {
@@ -120,24 +121,24 @@
             }
         }
     ?>
-    <form method="post">
-        <label for="name">Име</label><br/>
-        <input type="text" value="" name="name" id="name"><br/>
-        <label for="family">Фамилия</label><br/>
-        <input type="text" value="" name="family" id="family"><br/>
-        <label for="city">Град</label><br/>
+    <form method="post" action="upload.php" enctype="multipart/form-data">
+        <label for="name">Име</label><br />
+        <input type="text" value="" name="name" id="name"><br />
+        <label for="family">Фамилия</label><br />
+        <input type="text" value="" name="family" id="family"><br />
+        <label for="city">Град</label><br />
         <select name="city" id="city">
             <?php foreach ($cities as $city) { ?>
-                <option value="<?php echo $city;?>"><?php echo $city;?></option>
+            <option value="<?php echo $city;?>"><?php echo $city;?></option>
             <?php } ?>
-        </select><br/>
+        </select><br />
         <label for="age">Години</label><br />
         <input type="text" name="age" value=""><br />
         <label for="birthDate">Рожденна дата</label><br />
         <input type="text" name="birthDate" value="" placeholder="гггг-мм-дд"><br />
-        <label for="sex">Пол</label><br/>
-        <input type="radio" name="sex" value="male" id="sex">Мъжки 
-        <input type="radio" name="sex" value="female" id="sex">Женски <br/>
+        <label for="sex">Пол</label><br />
+        <input type="radio" name="sex" value="male" id="sex">Мъжки
+        <input type="radio" name="sex" value="female" id="sex">Женски <br />
         <label for="email">Имейл</label><br />
         <input type="email" name="email" id="email"><br />
         <label for="notes">Бележки</label><br />
@@ -146,6 +147,7 @@
         <input type="file" name="avatar" id="avatar"><br /> <br />
         <button type="submit" name="add" value="3">Запази</button>
     </form>
-    
+
 </body>
+
 </html>
