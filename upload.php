@@ -43,6 +43,7 @@ $avatar = '';
     }
   }
 
-require_once 'add.php';
+
+
 
 

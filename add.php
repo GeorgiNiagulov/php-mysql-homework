@@ -79,7 +79,8 @@
                 if (!empty($post['notes'])) {
                     $notes = $post['notes'];
                 }
-                
+
+                include_once 'upload.php';
 
                 $date = new \DateTime();
                 $createdAt = $date->format('Y-m-d H:i:s');
@@ -121,7 +122,7 @@
             }
         }
     ?>
-    <form method="post" action="upload.php" enctype="multipart/form-data">
+    <form method="post" enctype="multipart/form-data">
         <label for="name">Име</label><br />
         <input type="text" value="" name="name" id="name"><br />
         <label for="family">Фамилия</label><br />

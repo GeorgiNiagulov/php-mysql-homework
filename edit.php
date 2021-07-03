@@ -19,13 +19,12 @@ $age = null;
 $birthDate = null;
 $email = null;
 $notes = null;
-$avatar = null;
 $editedAt = null;
 $id = $contact['id'];
 
 if (!empty($_POST)) {
     $post = $_POST;
-    if (isset($post['save']) && $post['save'] == 2) {
+    if (isset($post['edit']) && $post['edit'] == 2) {
 
         $error = [];
 
@@ -90,9 +89,7 @@ if (!empty($_POST)) {
             $notes = $post['notes'];
         }
 
-        if (!empty($post['avatar'])) {
-            $avatar = $post['avatar'];
-        }
+        include_once 'upload.php';
 
         $date = new \DateTime();
         $editedAt = $date->format('Y-m-d H:i:s');
@@ -141,7 +138,7 @@ if (!empty($_POST)) {
             }
         }
     ?>
-    <form method="post" action="upload.php" enctype="multipart/form-data">
+    <form method="post" enctype="multipart/form-data">
         <label for="name">Име</label><br />
         <input type="text" name="name" value="<?php echo htmlentities($contact['name']); ?>"><br />
         <label for="family">Фамилия</label><br />
@@ -170,9 +167,11 @@ if (!empty($_POST)) {
         <input type="email" name="email" id="email" value="<?php echo htmlentities($contact['email']); ?>"><br />
         <label for="notes">Бележки</label><br />
         <input type="textarea" name="notes" id="notes" value="<?php echo htmlentities($contact['notes']); ?>"><br />
+
         <label for="avatar">Аватар</label><br />
+        <img src="<?php echo $contact['avatar'];?>" alt="" width="200" height="200">
         <input type="file" name="avatar" id="avatar"><br />
-        <button type="submit" name="save" value="2">Редактиране</button>
+        <button type="submit" name="edit" value="2">Редактиране</button>
     </form><br />
     <a href="index.php">Назад</a>
 
