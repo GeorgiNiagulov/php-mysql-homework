@@ -1,7 +1,6 @@
 <?php 
     require_once 'db/connect.php';
     $sql = "SELECT * FROM contact_data";
-    $contacts = mysqli_query($mysqli, $sql);
     $post = $_POST;
     $searchName = '';
     $searchFamily = '';
@@ -64,6 +63,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Списък</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </head>
 <body>
     Търсете по:
@@ -101,6 +103,27 @@
             } ?>
             <a href="index.php">Всички</a>
     <?php } else {
+
+        $page = 1;
+        if (isset($_GET['pageNo'])) {
+            $page = $_GET['pageNo'];
+        }
+
+        $limit = 2;
+
+        $offset = ($page - 1) * $limit;
+
+        $sql = "SELECT COUNT(*) FROM contact_data";
+
+        $total = mysqli_query($mysqli, $sql);
+
+        $numrows = mysqli_fetch_row($total)[0];
+
+        $totalPages = ceil($numrows/$limit);
+
+        $prepSql = "SELECT * FROM contact_data ORDER BY name LIMIT $offset, $limit";
+
+        $contacts = mysqli_query($mysqli, $prepSql);
 
     ?>
 
@@ -144,6 +167,18 @@
         </tbody>
         <?php } ?>
     </table>
+
+    <ul class="pagination">
+        <li><a href="?pageNo=1">Първа</a></li>
+        <li class="<?php if($page <= 1){ echo 'disabled'; } ?>">
+            <a href="<?php if($page <= 1){ echo '#'; } else { echo "?pageNo=".($page - 1); } ?>">Предишна</a>
+        </li>
+        <li class="<?php if($page >= $totalPages){ echo 'disabled'; } ?>">
+            <a href="<?php if($page >= $totalPages){ echo '#'; } else { echo "?pageNo=".($page + 1); } ?>">Следваща</a>
+        </li>
+        <li><a href="?pageNo=<?php echo $totalPages; ?>">Последна</a></li>
+    </ul>
+
     <?php }?>
 </body>
 </html>
