@@ -32,7 +32,7 @@
         </thead>
         <?php if(isset($contacts)) { ?>
         <tbody>
-            <?php foreach($contacts as $contact) {?>
+            <?php foreach($contacts as $contact) { ?>
                 <tr>
                     <td><?=$contact['name']?></td>
                     <td><?=$contact['family']?></td>
@@ -42,7 +42,7 @@
                     <td><?=$contact['birthdate']?></td>
                     <td><?=$contact['email']?></td>
                     <td><?=$contact['notes']?></td>
-                    <td><img src="/uploads/<?=$contact['avatar']?>" alt="" width="200" height="200"><?=$contact['avatar']?></td>
+                    <td><img src="<?php echo $contact['avatar'];?>" alt="" width="200" height="200"></td>
                     <td><?=$contact['createdAt']?></td>
                     <td><?=$contact['editedAt']?></td>
                     <td><a href="edit.php?id=<?php echo urlencode($contact['id']); ?>"> Редактиране</a></td>

@@ -12,7 +12,6 @@
         $birthDate = null;
         $email = null;
         $notes = null;
-        $avatar = null;
         $createdAt = null;
 
         if (!empty($post)) {
@@ -80,29 +79,30 @@
                 if (!empty($post['notes'])) {
                     $notes = $post['notes'];
                 }
-        
+                
+
                 $date = new \DateTime();
                 $createdAt = $date->format('Y-m-d H:i:s');
 
                 if (empty($error)) {
-                    $sql = "INSERT INTO contact_data 
-                            (`name`, `family`, city, sex, 
-                            age, birthDate, email,
-                            notes, avatar, createdAt) 
-                            VALUES 
-                            ('$name', '$family', '$city', '$sex',
-                            '$age', '$birthDate', '$email',
-                            '$notes', '$avatar', '$createdAt')";
-                    if (mysqli_query($mysqli, $sql) === TRUE) {
-                        mysqli_close($mysqli);
-                        header('Location: index.php');
-                    } else {
-                        echo "Error adding record: " . $mysqli->error;
-                    }
+                $sql = "INSERT INTO contact_data
+                (`name`, `family`, city, sex,
+                age, birthDate, email,
+                notes, avatar, createdAt)
+                VALUES
+                ('$name', '$family', '$city', '$sex',
+                '$age', '$birthDate', '$email',
+                '$notes', '$avatar', '$createdAt')";
+                if (mysqli_query($mysqli, $sql) === TRUE) {
+                    mysqli_close($mysqli);
+                    header('Location: index.php');
+                } else {
+                    echo "Error adding record: " . $mysqli->error;
                 }
             }
         }
-    ?>
+    }
+?>
 <!DOCTYPE html>
 <html lang="bg">
 
