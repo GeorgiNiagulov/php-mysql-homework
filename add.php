@@ -26,6 +26,8 @@
                     } else {
                         $error['name'] = $validName;
                     }
+                } else {
+                    $error['name'] = 'Стойността в име не може да бъде празна.';
                 }
                 
                 if (!empty($post['family'])) {
@@ -35,14 +37,20 @@
                     } else {
                         $error['family'] = $validFamily;
                     }
+                } else {
+                    $error['family'] = 'Стойността във фамилия не може да бъде празна.';
                 }
         
                 if (!empty($post['city'])) {
                     $city = $post['city'];
+                } else {
+                    $error['city'] = 'Стойността в град не може да бъде празна.';
                 }
         
                 if (!empty($post['sex'])) {
                     $sex = $post['sex'];
+                } else {
+                    $error['sex'] = 'Стойността в пол не може да бъде празна.';
                 }
         
                 if (!empty($post['birthDate'])) {
@@ -52,6 +60,8 @@
                     } else {
                         $error['birthDate'] = $validDate;
                     }
+                } else {
+                    $error['birthDate'] = 'Стойността в рожденна дата не може да бъде празна.';
                 }
         
                 if (!empty($post['age'])) {
@@ -74,6 +84,8 @@
                     } else {
                         $error['email'] = 'Невалиден имейл.';
                     }
+                } else {
+                    $error['email'] = 'Стойността в имейл не може да бъде празна.';
                 }
         
                 if (!empty($post['notes'])) {

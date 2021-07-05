@@ -8,27 +8,27 @@ $avatar = '';
   if(isset($_POST["submit"])) {
       $check = getimagesize($_FILES["fileToUpload"]["tmp_name"]);
       if($check !== false) {
-        echo "Файлът е снимка - " . $check["mime"] . ".";
+        echo "Файлът е снимка - " . $check["mime"] . ".".'<br/>';
         $uploadOk = 1;
       } else {
-        echo "Файлът не е снимка.";
+        echo "Файлът не е снимка.".'<br/>';
         $uploadOk = 0;
       }
     }
 
   if(file_exists($targetFile)) {
-    echo "За съжаление файлът съществува вече.";
+    echo "За съжаление файлът съществува вече.".'<br/>';
     $uploadOk = 0;
   }
 
   if ($_FILES["avatar"]["size"] > 500000) {
-    echo "За съжаление файлът е много голям.";
+    echo "За съжаление файлът е много голям.".'<br/>';
     $uploadOk = 0;
   }
 
   if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg"
   && $imageFileType != "gif" ) {
-    echo "За съжаление само JPG, JPEG, PNG и GIF файлове са разрешени.";
+    echo "За съжаление само JPG, JPEG, PNG и GIF файлове са разрешени.".'<br/>';
     $uploadOk = 0;
   }
 
@@ -36,10 +36,10 @@ $avatar = '';
     echo "За съжаление твоят файл не е качен.";
   } else {
     if (move_uploaded_file($_FILES["avatar"]["tmp_name"], $targetFile)) {
-      echo "Файлът ". htmlspecialchars( basename( $_FILES["avatar"]["name"])). " беше качен.";
+      echo "Файлът ". htmlspecialchars( basename( $_FILES["avatar"]["name"])). " беше качен.".'<br/>';
       $avatar = $targetFile;
     } else {
-      echo "За съжаление, изникна грешка при качване на файла.";
+      echo "За съжаление, изникна грешка при качване на файла.".'<br/>';
     }
   }
 

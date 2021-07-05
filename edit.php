@@ -5,6 +5,7 @@ require_once 'logic/functions.php';
 require_once 'logic/validate.php';
 
 $contact = find_contact_by_id($_GET['id'], $mysqli);
+
 if($contact == null) {
     echo 'Няма такъв контакт';
     return;
@@ -21,6 +22,7 @@ $email = null;
 $notes = null;
 $editedAt = null;
 $id = $contact['id'];
+$table = 'contact_data';
 
 if (!empty($_POST)) {
     $post = $_POST;
@@ -35,6 +37,8 @@ if (!empty($_POST)) {
             } else {
                 $error['name'] = $validName;
             }
+        } else {
+            $error['name'] = 'Стойността в име не може да бъде празна.';
         }
         
         if (!empty($post['family'])) {
@@ -44,14 +48,20 @@ if (!empty($_POST)) {
             } else {
                 $error['family'] = $validFamily;
             }
+        } else {
+            $error['family'] = 'Стойността във фамилия не може да бъде празна.';
         }
 
         if (!empty($post['city'])) {
             $city = $post['city'];
+        } else {
+            $error['city'] = 'Стойността в град не може да бъде празна.';
         }
 
         if (!empty($post['sex'])) {
             $sex = $post['sex'];
+        } else {
+            $error['sex'] = 'Стойността в пол не може да бъде празна.';
         }
 
         if (!empty($post['birthDate'])) {
@@ -61,6 +71,8 @@ if (!empty($_POST)) {
             } else {
                 $error['birthDate'] = $validDate;
             }
+        } else {
+            $error['birthDate'] = 'Стойността в рожденна дата не може да бъде празна.';
         }
 
         if (!empty($post['age'])) {
@@ -83,6 +95,8 @@ if (!empty($_POST)) {
             } else {
                 $error['email'] = 'Невалиден имейл.';
             }
+        } else {
+            $error['email'] = 'Стойността в имейл не може да бъде празна.';
         }
 
         if (!empty($post['notes'])) {
@@ -94,26 +108,20 @@ if (!empty($_POST)) {
         $date = new \DateTime();
         $editedAt = $date->format('Y-m-d H:i:s');
 
+        $arrayToSave = [
+            'name' => $name,
+            'family' => $family,
+            'city' => $city, 
+            'sex' => $sex,
+            'age' => $age, 
+            'birthdate' => $birthDate, 
+            'email' => $email,
+            'notes'=> $notes, 
+            'avatar' => $avatar, 
+            'editedAt' => $editedAt,
+        ];
         if (empty($error)) {
-            $sql = "UPDATE contact_data 
-                    SET 
-                        `name` = '$name', 
-                        family = '$family', 
-                        city = '$city', 
-                        sex = '$sex',
-                        age = '$age',
-                        email = '$email',
-                        notes = '$notes',
-                        avatar = '$avatar',
-                        editedAt = '$editedAt',
-                        birthdate = '$birthDate'
-                    WHERE id = '$id'";
-            if (mysqli_query($mysqli, $sql) === TRUE) {
-                mysqli_close($mysqli);
-                header('Location: index.php');
-            } else {
-                echo "Error updating record: " . $mysqli->error;
-            }
+            updateTableById($table, $arrayToSave, $id, $mysqli);
         }
     }
 }
