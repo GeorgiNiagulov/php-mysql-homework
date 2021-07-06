@@ -150,7 +150,7 @@
                 <td>Действие</td>
             </tr>
         </thead>
-        <?php if(isset($contacts)) { ?>
+        <?php if(!empty($contacts)) { ?>
         <tbody>
             <?php foreach($contacts as $contact) { ?>
                 <tr>
@@ -165,8 +165,9 @@
                     <td><img src="<?php echo $contact['avatar'];?>" width="200" height="200"></td>
                     <td><?=$contact['createdAt']?></td>
                     <td><?=$contact['editedAt']?></td>
-                    <td><a href="edit.php?id=<?php echo urlencode($contact['id']); ?>"> Редактиране</a></td>
-                    <td><a href="delete.php?id=<?php echo urlencode($contact['id']); ?>" >Изтриване</a></td>
+                    <td><a href="edit.php?id=<?php echo urlencode($contact['id']); ?>"> Редактиране</a><br />
+                        <a href="delete.php?id=<?php echo urlencode($contact['id']); ?>" >Изтриване</a>
+                    </td>
                 </tr>
             <?php } ?>
         </tbody>
@@ -183,6 +184,7 @@
         </li>
         <li><a href="?pageNo=<?php echo $totalPages; ?>">Последна</a></li>
     </ul>
+    <?php echo 'Страница '.$page.' от '.$totalPages; ?>
 
     <?php }?>
 </body>

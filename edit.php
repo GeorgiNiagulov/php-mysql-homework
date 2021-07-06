@@ -21,6 +21,7 @@ $birthDate = null;
 $email = null;
 $notes = null;
 $editedAt = null;
+$avatar = null;
 $id = $contact['id'];
 $table = 'contact_data';
 
@@ -181,6 +182,7 @@ if (!empty($_POST)) {
         <input type="file" name="avatar" id="avatar"><br />
         <button type="submit" name="edit" value="2">Редактиране</button>
     </form><br />
+    <a href="delete.php?id=<?php echo urlencode($contact['id']); ?>" >Изтриване</a>
     <a href="index.php">Назад</a>
 
 </body>

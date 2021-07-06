@@ -13,6 +13,7 @@
         $email = null;
         $notes = null;
         $createdAt = null;
+        $avatar = '';
 
         if (!empty($post)) {
             if (isset($post['add']) && $post['add'] == 3) {
@@ -136,9 +137,9 @@
     ?>
     <form method="post" enctype="multipart/form-data">
         <label for="name">Име</label><br />
-        <input type="text" value="" name="name" id="name"><br />
+        <input type="text" value="<?=$name;?>" name="name" id="name"><br />
         <label for="family">Фамилия</label><br />
-        <input type="text" value="" name="family" id="family"><br />
+        <input type="text" value="<?=$family;?>" name="family" id="family"><br />
         <label for="city">Град</label><br />
         <select name="city" id="city">
             <?php foreach ($cities as $city) { ?>
@@ -146,18 +147,18 @@
             <?php } ?>
         </select><br />
         <label for="age">Години</label><br />
-        <input type="text" name="age" value=""><br />
+        <input type="text" name="age" value="<?=$age;?>"><br />
         <label for="birthDate">Рожденна дата</label><br />
-        <input type="text" name="birthDate" value="" placeholder="гггг-мм-дд"><br />
+        <input type="text" name="birthDate" value="<?=$birthDate;?>" placeholder="гггг-мм-дд"><br />
         <label for="sex">Пол</label><br />
         <input type="radio" name="sex" value="male" id="sex">Мъжки
         <input type="radio" name="sex" value="female" id="sex">Женски <br />
         <label for="email">Имейл</label><br />
-        <input type="email" name="email" id="email"><br />
+        <input type="email" name="email" id="email" value="<?=$email;?>"><br />
         <label for="notes">Бележки</label><br />
-        <textarea name="notes" id="notes" rows="10" cols="50"></textarea><br />
+        <textarea name="notes" id="notes" rows="10" cols="50" value="<?=$notes;?>"></textarea><br />
         <label for="avatar">Аватар</label><br />
-        <input type="file" name="avatar" id="avatar"><br /> <br />
+        <input type="file" name="avatar" id="avatar" value="<?=$avatar;?>"><br /> <br />
         <button type="submit" name="add" value="3">Запази</button>
     </form>
 
